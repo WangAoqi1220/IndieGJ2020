@@ -5,9 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private float moveHorizontal, moveVertical;
-    [SerializeField]private float moveSpeed = 50f;
-    Vector3 deltaMovement = Vector3.zero;
+
+    [SerializeField]private float moveSpeed = 10f;
+    private Vector3 deltaMovement;
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -15,16 +16,25 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Move();
+        if(Input.anyKeyDown)
+        {
+            ComputeMovement();
+            Move();
+        }
     }
-    //private void FixedUpdate() 
-    //{
-    //    rb.velocity = new Vector2(moveHorizontal*moveSpeed, moveVertical*moveSpeed);
-    //}
     void Move()
     {
-        //moveHorizontal = Input.GetAxisRaw("Horizontal");
-        //moveVertical = Input.GetAxisRaw("Vertical");  
         this.transform.position += deltaMovement;
+    }
+    void ComputeMovement()
+    {
+        if (Input.GetKey(KeyCode.UpArrow))
+            deltaMovement = new Vector3(0, moveSpeed, 0);
+        else if (Input.GetKey(KeyCode.DownArrow))
+            deltaMovement = new Vector3(0, -moveSpeed, 0);
+        else if (Input.GetKey(KeyCode.LeftArrow))
+            deltaMovement = new Vector3(-moveSpeed, 0, 0);
+        else if (Input.GetKey(KeyCode.RightArrow))
+            deltaMovement = new Vector3(moveSpeed, 0, 0);
     }
 }
